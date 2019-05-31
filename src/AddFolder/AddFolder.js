@@ -15,15 +15,18 @@ export default class AddFolder extends React.Component {
         }
 
     }
+
+    static contextType = ApiContext;
     static defaultProps ={
-        onAddNote: () => {},
-      }
+      onAddFolder: () => {},
+    }
     updateName(name) {
         this.setState({name}, () => {this.validateName(name)});
       }
     
     handleSubmit(event) {
-        event.preventDefault();        
+        event.preventDefault();
+        throw new Error('error test'); 
         const name = {
             name: this.state.name
         }
@@ -43,7 +46,7 @@ export default class AddFolder extends React.Component {
             name.value = ''
             this.context.addFolder(data)
             // allow parent to perform extra behaviour
-            this.props.onAddNote(name)
+            this.props.onAddFolder(name)
           })
           .catch(error => {
             console.error({ error })

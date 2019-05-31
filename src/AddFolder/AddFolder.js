@@ -2,6 +2,7 @@ import React from 'react'
 import ValidationError from '../ValidationError'
 import ApiContext from '../ApiContext'
 import config from '../config'
+import PropTypes from 'prop-types';
 
 export default class AddFolder extends React.Component {
     constructor(props) {
@@ -13,20 +14,20 @@ export default class AddFolder extends React.Component {
                 name: '',
               }
         }
-
     }
 
     static contextType = ApiContext;
     static defaultProps ={
       onAddFolder: () => {},
     }
+
     updateName(name) {
         this.setState({name}, () => {this.validateName(name)});
       }
     
     handleSubmit(event) {
         event.preventDefault();
-        throw new Error('error test'); 
+        // throw new Error('error test'); 
         const name = {
             name: this.state.name
         }
@@ -47,6 +48,7 @@ export default class AddFolder extends React.Component {
             this.context.addFolder(data)
             // allow parent to perform extra behaviour
             this.props.onAddFolder(name)
+            this.props.history.push('/')
           })
           .catch(error => {
             console.error({ error })
@@ -94,3 +96,7 @@ export default class AddFolder extends React.Component {
         )
     }
 }
+
+AddFolder.PropTypes = {
+    onAddFolder: PropTypes.func,
+  }

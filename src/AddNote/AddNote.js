@@ -2,6 +2,7 @@ import React from 'react'
 import ValidationError from '../ValidationError'
 import ApiContext from '../ApiContext'
 import config from '../config'
+import PropTypes from 'prop-types';
 
 export default class AddNote extends React.Component {
     constructor(props) {
@@ -19,6 +20,7 @@ export default class AddNote extends React.Component {
         }
 
     }
+   
     static defaultProps ={
         onAddNote: () => {},
       }
@@ -29,6 +31,7 @@ export default class AddNote extends React.Component {
       this.setState({content}, () => {this.validateContent(content)});
     }
     updateFolder(folder) {
+      console.log(folder)
       this.setState({folder}, () => folder);
     }
     
@@ -38,9 +41,9 @@ export default class AddNote extends React.Component {
           name: this.state.name,
           content: this.state.content,
           modified: new Date(),
-          folderId: this.state.folderId
+          folderId: event.target[`folder-select`].value,
         }
-        fetch(`${config.API_ENDPOINT}/folders/`, {
+        fetch(`${config.API_ENDPOINT}/notes/`, {
             method: 'POST',
             body: JSON.stringify(note),
             headers: {
@@ -54,9 +57,7 @@ export default class AddNote extends React.Component {
           })
           .then(data => {
             this.context.addNote(data)
-            // allow parent to perform extra behaviour
-            this.props.onAddNote(note)
-            this.props.history.push(`/folder/:${data.folderId}`)
+            this.props.history.push(`/folder/${data.folderId}`)
           })
           .catch(error => {
             // getDerivedStateFromError({ error })
@@ -137,4 +138,8 @@ export default class AddNote extends React.Component {
           </form>
         )
     }
+}
+
+AddNote.PropTypes = {
+  onAddNote: PropTypes.func
 }

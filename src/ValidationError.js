@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default function ValidationError(props) {
   if(props.hasError) {
@@ -8,4 +9,9 @@ export default function ValidationError(props) {
   }
 
   return <></>
+}
+
+ValidationError.PropTypes = {
+    hasError: PropTypes.bool.required,
+    message: PropTypes.string.required
 }

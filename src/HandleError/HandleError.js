@@ -1,26 +1,28 @@
 import React, {Component} from 'react';
 
 class HandleError extends React.Component {
-  state = {hasError: false};
-  // Static method
-  static getDerivedStateFromError(error) {
-      // Called when an error is thrown in a child component
-      console.error(error);
-      // Store the error in the state
-      return {hasError: true};
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
   }
+
+  static getDerivedStateFromError(error) {
+    // Update state so the next render will show the fallback UI.
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, info) {
+    // You can also log the error to an error reporting service
+    console.log(error);
+  }
+
   render() {
-      // If there was an error, show an error page
-      if (this.state.error) {
-          return (
-              <main className="error-page">
-                  <h1>Something seems to have gone wrong</h1>
-                  <p>Try refreshing the page</p>
-              </main>
-          );
-      }
-      // Otherwise, render the children
-      return this.props.children;
+    if (this.state.hasError) {
+      // You can render any custom fallback UI
+      return <h1>Something went wrong.</h1>;
+    }
+
+    return this.props.children; 
   }
 }
 

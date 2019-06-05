@@ -8,12 +8,15 @@ import { BrowserRouter } from 'react-router-dom'
 import 'typeface-roboto'
 import './index.css'
 import App from './App/App'
+import { ApiProvider } from './ApiContext';
 
 library.add(faPlus, faChevronLeft, faTrashAlt, faCheckDouble)
 
 ReactDOM.render(
   <BrowserRouter>
-    <App />
+    <ApiProvider>
+      <App />
+    </ApiProvider>
   </BrowserRouter>,
   document.getElementById('root')
 )
